@@ -13,6 +13,6 @@ message = 'GET index.html'
 clientSocket.sendto(message.encode(), (serverName, serverPort))
 
 receivedMessage, serverAddress = clientSocket.recvfrom(2048)
+
 print(receivedMessage)
 
-f = open(receivedMessage)

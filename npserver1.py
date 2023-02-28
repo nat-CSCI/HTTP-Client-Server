@@ -15,7 +15,7 @@ print('Ready to receive')
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     if "index.html" in message.decode():
-        path = "C:/Users/natdy/OneDrive/Desktop/HTTP Client Server/HTTP-Client-Server/SampleWebPage/index.html"
+        path = "C:\Users\natdy\OneDrive\Desktop\HTTP Client Server\HTTP-Client-Server\SampleWebPage\index.html"
         if exists(path):
-            newMessage = "index.html is there"
-            serverSocket.sendto(path.encode(),clientAddress)
+            newMessage = "Got it"
+            serverSocket.sendto(newMessage.encode(),clientAddress )
