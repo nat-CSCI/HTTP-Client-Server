@@ -1,9 +1,12 @@
 # UDPclient.py
 from socket import * #include Python's socket library
+import sys
 from html.parser import HTMLParser
 import sys
 import time
 
+serverName = '127.0.0.1' #hostname
+serverPort = 12000
 
 """ [Command Line Notes]
 Format of command line:
@@ -35,6 +38,7 @@ clientSocket.sendto(message.encode(), (serverName, serverPort))
 receivedMessage, serverAddress = clientSocket.recvfrom(2048)
 print(receivedMessage.decode())
 
+
 ##########################
 #-------HTML parser------#
 ##########################
@@ -48,7 +52,9 @@ On a endtag /html
     end program
 """
 
+image_filenames = []
 class MyHTMLParser(HTMLParser):
+    #Send request when an img tag is found
     def handle_starttag(self, tag, attrs):
         if tag == 'img':
             print("Encountered a start tag:", tag)
@@ -56,15 +62,15 @@ class MyHTMLParser(HTMLParser):
             print('Attribute: ', s[1])
             clientSocket.sendto(s[1].encode(), (serverName, serverPort))
 
-    def handle_endtag(self, tag):
-        if tag == 'img':
-            print("Encountered an end tag :", tag)
-        elif tag == 'html':
-             print("Encountered an end tag :", tag)
+            #Receive image file name
+            image, serverAddress = clientSocket.recvfrom(2048)
+            image_filenames.append(image)
 
-    def handle_data(self, data):
-            if data.__contains__("index_files"):
-                print("Encountered some data  :", data)
+    def handle_endtag(self, tag):
+        if tag == 'html':
+             print("Encountered an end tag :", tag)
+             message = "/html"
+             clientSocket.sendto(message.encode(), (serverName, serverPort))
 
 parser = MyHTMLParser()
 
@@ -84,6 +90,8 @@ for x in parsedFile:
 		updatedfiletext = updatedfiletext + x + " " #stores in updatedfiletext
 
 """
+
+
 
 ########################
 #----Finish Program----#
