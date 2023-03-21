@@ -41,18 +41,20 @@ while 1:
 ###############################
 #----Image/Source Requests----#
 ###############################
-""" [Outline for recieving requests]
 while 1:
-	tag, serverAddress = clientSocket.recvfrom(2048)
-	tag = tag.decode()
+    tag, serverAddress = serverSocket.recvfrom(2048)
+    tag = tag.decode()
     print(tag)
-	
-	if(tag == '/html'): #exit on tag /html
-		break;
-    else if (tag == 'img') #handle image request on tag img
+    if(tag == "/html"):
+        break
+    elif(tag=='img'):
+        break
         #find resource using path
         #send resource to server
-"""
+
+
+
+
 
 ########################
 #----Finish Program----#
