@@ -62,9 +62,7 @@ class MyHTMLParser(HTMLParser):
             print('Attribute: ', s[1])
             clientSocket.sendto(s[1].encode(), (serverName, serverPort))
 
-            #Receive image file name
-            image, serverAddress = clientSocket.recvfrom(2048)
-            image_filenames.append(image)
+            
 
     def handle_endtag(self, tag):
         if tag == 'html':
