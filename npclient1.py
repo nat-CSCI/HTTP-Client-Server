@@ -19,10 +19,11 @@ class MyHTMLParser(HTMLParser):
             x = s[1]
             x = x[1:]
             print('Attribute: ', x)
-            print('Attributes', attrs)
             clientSocket.sendto(x.encode(), (serverName, serverPort))
            # message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
-            print(x.split('/')[2])
+            #print(x.split('/')[2])
+            #f = open(x.split('/')[2], "w")
+           # f.write(message.decode())
 
     def handle_endtag(self, tag):
         if tag == 'html':
@@ -57,9 +58,17 @@ start_time = time.time()
 #-------GET Request------#
 ##########################
 message = 'GET index.html'
-clientSocket.sendto(message.encode(), (serverName, serverPort))
-receivedMessage, serverAddress = clientSocket.recvfrom(2048)
-index_file = receivedMessage.decode()
+clientSocket.sendto(message.encode("utf-8"), (serverName, serverPort))
+f = open("index_file", 'w', encoding="utf-8")
+index_file = ''
+while 1:
+    receivedMessage, serverAddress = clientSocket.recvfrom(2048)
+    if receivedMessage.decode("utf-8") != "Done":
+            index_file = index_file+receivedMessage.decode("utf-8")+"\n"
+    else:
+         break
+    
+f.write(index_file)
 
 
 ##########################

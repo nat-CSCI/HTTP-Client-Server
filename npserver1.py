@@ -35,18 +35,20 @@ path = sys.argv[2] #set the directory path
 start_time = time.time()
 print('Ready to receive')
 index_file = readHTML(path+'/index.html')
+lines = index_file.splitlines()
 
 #################################
 #--Wait for Index.html request--#
 #################################
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
-    if "index.html" in message.decode():
+    if "index.html" in message.decode("utf-8"):
         # if exists(path):
          newMessage = "Got it"
-         serverSocket.sendto(index_file.encode(),clientAddress )
+         for x in lines:
+            serverSocket.sendto(x.encode("utf-8"),clientAddress)
          break
- 
+serverSocket.sendto("Done".encode(),clientAddress)
 ###############################
 #----Image/Source Requests----#
 ###############################
