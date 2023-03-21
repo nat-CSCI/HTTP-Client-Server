@@ -4,7 +4,19 @@ from os.path import exists
 import sys
 import time
 
+##################################
+#------- functions/globals ------#
+##################################
 
+# Read html file into string
+def readHTML(inFile):
+	with open(inFile, 'r', encoding='utf8') as htmlfile:
+		data = htmlfile.read()
+	return data
+
+#########################
+#-------Setting up------#
+#########################
 """ [Command Line Notes]
 Format of command line:
     python myserver.py server_port directory_path
@@ -14,18 +26,15 @@ Format of command line:
 2. sys.argv[1] = server_port 
 3. sys.argv[2] = directory_path
 """
-
-#########################
-#-------Setting up------#
-#########################
-serverPort = 12000 #Set serverPort
-#serverPort = int(sys.argv[1]) #Set serverPort with command line args
+#serverPort = 12000 #Set serverPort
+serverPort = int(sys.argv[1]) #Set serverPort with command line args
 serverSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket
 serverSocket.bind(('', serverPort)) # Bind socket to local port number 12000
 #path = "C:/Users/natdy/OneDrive/Desktop/HTTP Client Server/HTTP-Client-Server/SampleWebPage/index.html"
-#path = sys.argv[2] #set the directory path
+path = sys.argv[2] #set the directory path
 start_time = time.time()
 print('Ready to receive')
+index_file = readHTML(path+'/index.html')
 
 #################################
 #--Wait for Index.html request--#
@@ -35,7 +44,7 @@ while 1:
     if "index.html" in message.decode():
         # if exists(path):
          newMessage = "Got it"
-         serverSocket.sendto(newMessage.encode(),clientAddress )
+         serverSocket.sendto(index_file.encode(),clientAddress )
          break
  
 ###############################
@@ -48,7 +57,9 @@ while 1:
     if(tag == "/html"):
         break
     elif(tag=='img'):
-        break
+        attribute, serverAddress = serverSocket.recvfrom(2048)
+        f = open(path+attribute,encoding='utf8')
+
         #find resource using path
         #send resource to server
 
@@ -59,3 +70,4 @@ while 1:
 elapsed_time = time.time() - start_time
 print('Elapsed Time: ' + elapsed_time)
 sys.exit("-----")
+
