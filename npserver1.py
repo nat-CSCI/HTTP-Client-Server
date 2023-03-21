@@ -53,9 +53,6 @@ while 1:
         #send resource to server
 
 
-
-
-
 ########################
 #----Finish Program----#
 ########################
