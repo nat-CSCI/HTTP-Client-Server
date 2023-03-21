@@ -41,6 +41,7 @@ while 1:
 ###############################
 #----Image/Source Requests----#
 ###############################
+#[Outline for recieving requests]
 while 1:
     tag, serverAddress = serverSocket.recvfrom(2048)
     tag = tag.decode()
@@ -49,9 +50,7 @@ while 1:
         break
     elif(tag=='img'):
         break
-        #find resource using path
-        #send resource to server
-
+    
 
 ########################
 #----Finish Program----#

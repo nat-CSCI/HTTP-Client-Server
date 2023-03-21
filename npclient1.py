@@ -52,17 +52,26 @@ On a endtag /html
     end program
 """
 
+"""
+open file with image name
+write binary info from server to file
+"""
+
 image_filenames = []
 class MyHTMLParser(HTMLParser):
     #Send request when an img tag is found
     def handle_starttag(self, tag, attrs):
         if tag == 'img':
             print("Encountered a start tag:", tag)
+            clientSocket.sendto(tag.encode(), (serverName, serverPort))
             s = attrs[0]
-            print('Attribute: ', s[1])
-            clientSocket.sendto(s[1].encode(), (serverName, serverPort))
-
-            
+            x = s[1]
+            x = x[1:]
+            print('Attribute: ', x)
+            print('Attributes', attrs)
+            clientSocket.sendto(x.encode(), (serverName, serverPort))
+           # message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
+            print(x.split('/')[2])
 
     def handle_endtag(self, tag):
         if tag == 'html':
