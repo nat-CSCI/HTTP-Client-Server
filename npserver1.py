@@ -26,12 +26,12 @@ Format of command line:
 2. sys.argv[1] = server_port 
 3. sys.argv[2] = directory_path
 """
-#serverPort = 12000 #Set serverPort
-serverPort = int(sys.argv[1]) #Set serverPort with command line args
+serverPort = 12000 #Set serverPort
+#serverPort = int(sys.argv[1]) #Set serverPort with command line args
 serverSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket
 serverSocket.bind(('', serverPort)) # Bind socket to local port number 12000
-#path = "C:/Users/natdy/OneDrive/Desktop/HTTP Client Server/HTTP-Client-Server/SampleWebPage/index.html"
-path = sys.argv[2] #set the directory path
+path = "C:/Users/natdy/OneDrive/Desktop/HTTP-Client-Server/HTTP-Client-Server"
+#path = sys.argv[2] #set the directory path
 start_time = time.time()
 print('Ready to receive')
 index_file = readHTML(path+'/index.html')
@@ -46,8 +46,11 @@ while 1:
         # if exists(path):
          newMessage = "Got it"
          for x in lines:
-            serverSocket.sendto(x.encode("utf-8"),clientAddress)
+            if x.strip() != "":
+                serverSocket.sendto(x.encode("utf-8"),clientAddress)
+                print(x)
          break
+print("Done")
 serverSocket.sendto("Done".encode(),clientAddress)
 ###############################
 #----Image/Source Requests----#

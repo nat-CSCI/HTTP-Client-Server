@@ -46,10 +46,10 @@ Format of command line:
 3. sys.argv[2] = server_port
 4. sys.argv[3] = file_name (index.html)
 """
-#serverName = '127.0.0.1' #set IP
-serverName = sys.argv[1] #hostname with command line args
-#serverPort = 12000 #set port
-serverPort = int(sys.argv[2]) #set port with command line args
+serverName = '127.0.0.1' #set IP
+#serverName = sys.argv[1] #hostname with command line args
+serverPort = 12000 #set port
+#serverPort = int(sys.argv[2]) #set port with command line args
 clientSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket for server
 start_time = time.time()
 
@@ -61,13 +61,18 @@ message = 'GET index.html'
 clientSocket.sendto(message.encode("utf-8"), (serverName, serverPort))
 f = open("index_file", 'w', encoding="utf-8")
 index_file = ''
+x = 0
 while 1:
     receivedMessage, serverAddress = clientSocket.recvfrom(2048)
     if receivedMessage.decode("utf-8") != "Done":
             index_file = index_file+receivedMessage.decode("utf-8")+"\n"
+            print(x)
+            print(receivedMessage.decode("utf-8")+"\n")
+            x = x+1
     else:
          break
-    
+
+print("Out of while")
 f.write(index_file)
 
 
