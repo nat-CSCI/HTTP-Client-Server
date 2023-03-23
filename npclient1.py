@@ -20,10 +20,11 @@ class MyHTMLParser(HTMLParser):
             x = x[1:]
             print('Attribute: ', x)
             clientSocket.sendto(x.encode(), (serverName, serverPort))
-           # message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
-            #print(x.split('/')[2])
-            #f = open(x.split('/')[2], "w")
-           # f.write(message.decode())
+            message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
+            print(x.split('/')[2])
+            #c = open(x.split('/')[2], "w")
+            #c.write(message.decode())
+            #c.close()
 
     def handle_endtag(self, tag):
         if tag == 'html':
@@ -64,16 +65,19 @@ index_file = ''
 x = 0
 while 1:
     receivedMessage, serverAddress = clientSocket.recvfrom(2048)
+    #print(receivedMessage.decode("utf-8")+"\n")
     if receivedMessage.decode("utf-8") != "Done":
-            index_file = index_file+receivedMessage.decode("utf-8")+"\n"
-            print(x)
-            print(receivedMessage.decode("utf-8")+"\n")
-            x = x+1
+        index_file = index_file+receivedMessage.decode("utf-8")+"\n"
+        #print(x)
+        #print(receivedMessage.decode("utf-8")+"\n")
+        x = x+1
     else:
          break
 
 print("Out of while")
+#print(index_file)
 f.write(index_file)
+f.close()
 
 
 ##########################
@@ -93,7 +97,7 @@ image_filenames = []
 
 parser = MyHTMLParser()
 
-f = open(index_file,encoding='utf8')
+f = open("index_file", encoding='utf8')
 parsedFile = parser.feed(f.read())
 
 """[Rough code for handling message sending to client]
@@ -113,6 +117,6 @@ for x in parsedFile:
 ########################
 #----Finish Program----#
 ########################
-elapsed_time = time.time() - start_time
-print('Elapsed Time: ' + elapsed_time)
+#elapsed_time = time.time() - start_time
+#print('Elapsed Time: ' + elapsed_time)
 sys.exit("-----")

@@ -47,8 +47,9 @@ while 1:
          newMessage = "Got it"
          for x in lines:
             if x.strip() != "":
-                serverSocket.sendto(x.encode("utf-8"),clientAddress)
-                print(x)
+                y = x.strip()
+                serverSocket.sendto(y.encode("utf-8"),clientAddress)
+                print(y)
          break
 print("Done")
 serverSocket.sendto("Done".encode(),clientAddress)
@@ -63,9 +64,16 @@ while 1:
     if(tag == "/html"):
         break
     elif(tag=='img'):
+        image = ''
         attribute, serverAddress = serverSocket.recvfrom(2048)
-        f = open(path+attribute,encoding='utf8')
-
+        attribute = attribute.decode()
+        if exists(path+attribute):
+            f = open(path+attribute,'rb')
+            image = f.read()
+        #binary file sent to client is too big so it needs to be split up
+        #Otherwise, everything is working right
+        serverSocket.sendto(image, clientAddress)
+    
         #find resource using path
         #send resource to server
 
@@ -73,7 +81,7 @@ while 1:
 ########################
 #----Finish Program----#
 ########################
-elapsed_time = time.time() - start_time
-print('Elapsed Time: ' + elapsed_time)
+#elapsed_time = time.time() - start_time
+#print('Elapsed Time: ' + elapsed_time)
 sys.exit("-----")
 
