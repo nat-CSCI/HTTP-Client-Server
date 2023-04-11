@@ -26,12 +26,11 @@ Format of command line:
 2. sys.argv[1] = server_port 
 3. sys.argv[2] = directory_path
 """
-
-serverPort = 3904 #Set serverPort
+serverPort = 12000 #Set serverPort
 #serverPort = int(sys.argv[1]) #Set serverPort with command line args
 serverSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket
 serverSocket.bind(('', serverPort)) # Bind socket to local port number 12000
-path = "/home/bernmt/csci373/"
+path = "C:/Users/natdy/OneDrive/Desktop/HTTP-Client-Server/HTTP-Client-Server"
 #path = sys.argv[2] #set the directory path
 start_time = time.time()
 print('Ready to receive')

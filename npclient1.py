@@ -22,9 +22,11 @@ class MyHTMLParser(HTMLParser):
             clientSocket.sendto(x.encode(), (serverName, serverPort))
             message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
             print(x.split('/')[2])
-            #c = open(x.split('/')[2], "w")
-            #c.write(message.decode())
-            #c.close()
+            c = open(x.split('/')[2], 'wb')
+            while message != 'done':
+                message, serverAddress = clientSocket.recvfrom(2048) #recieve response from client
+                c.write(message)
+            c.close()
 
     def handle_endtag(self, tag):
         if tag == 'html':
