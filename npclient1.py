@@ -47,10 +47,10 @@ Format of command line:
 3. sys.argv[2] = server_port
 4. sys.argv[3] = file_name (index.html)
 """
-serverName = '127.0.0.1' #set IP
-#serverName = sys.argv[1] #hostname with command line args
-serverPort = 12000 #set port
-#serverPort = int(sys.argv[2]) #set port with command line args
+#serverName = '127.0.0.1' #set IP
+serverName = sys.argv[1] #hostname with command line args
+#serverPort = 12000 #set port
+serverPort = int(sys.argv[2]) #set port with command line args
 clientSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket for server
 start_time = time.time()
 

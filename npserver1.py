@@ -10,7 +10,7 @@ import time
 
 # Read html file into string
 def readHTML(inFile):
-	with open(inFile, 'r', encoding='utf8') as htmlfile:
+	with open(inFile, 'r') as htmlfile:
 		data = htmlfile.read()
 	return data
 
@@ -26,15 +26,16 @@ Format of command line:
 2. sys.argv[1] = server_port 
 3. sys.argv[2] = directory_path
 """
-serverPort = 12000 #Set serverPort
+
+serverPort = 3904 #Set serverPort
 #serverPort = int(sys.argv[1]) #Set serverPort with command line args
 serverSocket = socket(AF_INET, SOCK_DGRAM) # Create UDP socket
 serverSocket.bind(('', serverPort)) # Bind socket to local port number 12000
-path = "C:/Users/natdy/OneDrive/Desktop/HTTP-Client-Server/HTTP-Client-Server"
+path = "/home/bernmt/csci373/"
 #path = sys.argv[2] #set the directory path
 start_time = time.time()
 print('Ready to receive')
-index_file = readHTML(path+'/index.html')
+index_file = readHTML(path+'index.html')
 lines = index_file.splitlines()
 
 #################################
@@ -42,17 +43,18 @@ lines = index_file.splitlines()
 #################################
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
-    if "index.html" in message.decode("utf-8"):
+    if "index.html" in message.decode():
         # if exists(path):
          newMessage = "Got it"
          for x in lines:
             if x.strip() != "":
                 y = x.strip()
-                serverSocket.sendto(y.encode("utf-8"),clientAddress)
+                serverSocket.sendto(y.encode('utf-8'),clientAddress)
                 print(y)
          break
 print("Done")
 serverSocket.sendto("Done".encode(),clientAddress)
+
 ###############################
 #----Image/Source Requests----#
 ###############################
@@ -68,15 +70,20 @@ while 1:
         attribute, serverAddress = serverSocket.recvfrom(2048)
         attribute = attribute.decode()
         if exists(path+attribute):
-            f = open(path+attribute,'rb')
-            image = f.read()
+            image_file = path+attribute
+            with open(image_file,'rb') as infile:
+                 while True:
+                      chunk = infile.read(2048)
+                      if not chunk: break
+                      serverSocket.sendto(chunk, clientAddress)
+        serverSocket.sendto("Done".encode(),clientAddress)
+
         #binary file sent to client is too big so it needs to be split up
         #Otherwise, everything is working right
-        serverSocket.sendto(image, clientAddress)
+        #serverSocket.sendto(image, clientAddress)
     
         #find resource using path
         #send resource to server
-
 
 ########################
 #----Finish Program----#
